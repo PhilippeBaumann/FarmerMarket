@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { DataCoreProvider } from 'src/providers/dataprovider';
+import { Storage } from '@ionic/storage';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-settings',
@@ -7,7 +12,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsPage implements OnInit {
 
-  constructor() { }
+  public data: DataCoreProvider;
+  
+  constructor(
+    private router: Router,
+    storage: Storage,
+    private http: HttpClient,
+    private apiService: ApiService,
+  ) {
+    this.data = new DataCoreProvider(storage, http);
+    this.data.init();
+  }
 
   ngOnInit() {
   }

@@ -12,16 +12,17 @@ export class ApiService {
 
   results: Observable<any>;
 
-  constructor(private apiServer: ApiService, private http: HttpClient) {
+  //constructor(private apiServer: ApiService, private http: HttpClient) {
+  constructor(private http: HttpClient) {
       
   }  
 
   getProducts(){
-    return this.http.get(this.url);
+    return this.http.get(this.url + "products");
   }
 
   getUser(id){
-    return this.http.get(this.url);
+    return this.http.get(this.url + "me");
   }
 
   registerUser(firstname, lastname, phonenumber){
@@ -30,6 +31,6 @@ export class ApiService {
         "lastname": lastname,
         "phonenumber": phonenumber
     }
-    return this.http.post(this.url + '/user/apply', postData); 
+    return this.http.post(this.url + '/user/apply', postData);
   }
 }

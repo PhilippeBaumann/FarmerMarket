@@ -4,7 +4,7 @@ import { ApiService } from '../services/api.service';
 import { Storage } from '@ionic/storage';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Vegetables } from '../../models/vegetables';
+import { Vegetable } from '../../models/vegetables';
 import { Router, NavigationExtras } from '@angular/router';
 
 @Component({

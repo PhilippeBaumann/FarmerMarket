@@ -1,12 +1,15 @@
 import { Storage } from '@ionic/storage';
 import {Data} from '@angular/router';
 import {init} from 'protractor/built/launcher';
-import { Vegetables } from '../models/vegetables';
 import {ApiService} from '../app/services/api.service';
 import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { resolve } from 'url';
+
+// Models Import
+import { Vegetable } from '../models/vegetables';
+import { User } from 'src/models/users';
 
 @Injectable()
 
@@ -26,21 +29,17 @@ export class DataCoreProvider {
     init() {
 
         
-        this.user = [];
-        this.vegetables = [];
+        this.user = []
+        this.vegetables = []
 
         // Load data via the local storage
-        //this.loadStorage();
+        // this.loadStorage();
 
-        this.getFromAPI();
+        //this.api = new ApiService(this.http)
 
-        /*
-        this.vegetables.push(new Vegetables('Poivnichon Bio 3000', 'troubabaobob', 1, 30, 'choupommeau', 30.90 ));
-        this.vegetables.push(new Vegetables('Le BOB', 'troubabaobob LE', 2, 30, 'choupommeau', 32.00 ));
-  
-        this.storage.set('FarmerMarket', this.vegetables);
+        this.getFromAPI()
 
-        
+        /*       
         console.log('Data successfully inserted');
         */
     }
@@ -72,19 +71,28 @@ export class DataCoreProvider {
     // Access the API trough a specific Path and Load the result Into the object Collection
     public getFromAPI(): Promise<any> {
         return new Promise<any>( (resolve, reject) => {
-            this.http.get<Vegetables[]>(this.url + 'products').subscribe(results => {
+            this.http.get<Vegetable[]>(this.url + 'products').subscribe(results => {
                 console.log(results)
                 this.vegetables = results['data']
                 this.setVegetables(this.vegetables)
             });
-        })
-        
+            this.http.get<User[]>(this.url + 'me').subscribe(results => {
+                console.log(results)
+                this.user = results['data']
+                this.setUser(this.user)
+            });
+        })        
     }
     
 
     // Insert the vegetables Into the local storage
-    public async setVegetables(vegetables: Vegetables[]) {
+    public async setVegetables(vegetables: Vegetable[]) {
         this.storage.set('products', vegetables)
+    }
+
+    // Insert the user values into the local storage
+    public async setUser(user: User[]) {
+        this.storage.set('user', user)
     }
 
     public find(id) {

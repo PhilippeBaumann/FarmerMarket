@@ -2,7 +2,7 @@
  * Copyright (c) 2020. - Philippe Baumann , All rights reserved.
  */
 
-export class Vegetables {
+export class Vegetable {
 
     public _id: number;
     public _name: string;
