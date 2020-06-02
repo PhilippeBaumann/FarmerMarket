@@ -14,34 +14,19 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-card>
+  <ion-card *ngFor="let product of data.vegetables">
+    <ion-card-header>
+      <ion-card-subtitle>{{product.price}} CHF Par {{product.unit}}</ion-card-subtitle>
+      <ion-card-title>{{product.name}}</ion-card-title>      
+    </ion-card-header>
+    
     <ion-item>
-      <ion-label>Salade Vaudoise</ion-label>
-      <ion-button fill="outline" slot="end">Open</ion-button>
+      <ion-text>{{product.details}}</ion-text>
+      <ion-button fill="outline" slot="end">Ajouter</ion-button>         
     </ion-item>   
   
     <ion-card-content>
-      IMG ici
+      <img src="http://localhost:8000/storage/pictures/{{product.picture}}"/>
+      <ion-label>{{product.stock}} disponible</ion-label>
     </ion-card-content>
   </ion-card>
-  <ion-card>
-    <ion-item>
-      <ion-label>Salade Vaudoise Bio</ion-label>
-      <ion-button fill="outline" slot="end">Open</ion-button>
-    </ion-item>
-  
-    <ion-card-content>
-      IMG ici
-    </ion-card-content>
-  </ion-card>
-  <ion-card>
-    <ion-item>
-      <ion-label>Salade Verte</ion-label>
-      <ion-button fill="outline" slot="end">Open</ion-button>
-    </ion-item> 
-  
-    <ion-card-content>
-      IMG ici
-    </ion-card-content>
-  </ion-card>  
-</ion-content>
