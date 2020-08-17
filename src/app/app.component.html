@@ -3,8 +3,7 @@
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-list-header>Welcome Joe Doe</ion-list-header>
-          <ion-note>token here</ion-note>
+          <ion-list-header>Welcome {{data.user.firstname}} {{data.user.lastname}}</ion-list-header>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">

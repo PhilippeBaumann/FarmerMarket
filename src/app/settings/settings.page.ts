@@ -12,6 +12,7 @@ import { ApiService } from '../services/api.service';
 })
 export class SettingsPage implements OnInit {
 
+  // Try to access already initialized data or refresh it
   public data: DataCoreProvider;
   
   constructor(
