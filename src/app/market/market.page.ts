@@ -16,6 +16,8 @@ export class MarketPage implements OnInit {
 
   public data: DataCoreProvider;
 
+  private url = "http://vedjiz.mycpnv.ch/";
+
   constructor(
     private router: Router,
     storage: Storage,

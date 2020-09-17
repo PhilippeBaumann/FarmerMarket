@@ -4,12 +4,8 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'market',
+    redirectTo: 'login',
     pathMatch: 'full'
-  },
-  {
-    path: 'folder/:id',
-    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
   },
   {
     path: 'market',
@@ -18,7 +14,21 @@ const routes: Routes = [
   {
     path: 'settings',
     loadChildren: () => import('./settings/settings.module').then( m => m.SettingsPageModule)
+  },
+  {
+    path: 'balance',
+    loadChildren: () => import('./balance/balance.module').then( m => m.BalancePageModule)
+  },
+  {
+    path: 'basket',
+    loadChildren: () => import('./basket/basket.module').then( m => m.BasketPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   }
+
+
 ];
 
 @NgModule({

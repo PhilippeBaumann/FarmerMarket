@@ -20,7 +20,7 @@ export class DataCoreProvider {
     public user;
     private api: ApiService;
 
-    public url = 'http://localhost:8000/api/';
+    public url = 'http://vedjiz.mycpnv.ch/api/';
     
     public lastRefresh;
 
@@ -34,8 +34,6 @@ export class DataCoreProvider {
 
         // Load data via the local storage
         // this.loadStorage();
-
-        //this.api = new ApiService(this.http)
 
         this.getFromAPI()
 
@@ -93,6 +91,11 @@ export class DataCoreProvider {
     // Insert the user values into the local storage
     public async setUser(user: User[]) {
         this.storage.set('user', user)
+    }
+
+    // Insert the token into the local storage
+    public async setToken(token) {
+        this.storage.set('token', token)
     }
 
     public find(id) {

@@ -23,8 +23,8 @@
       
   
     <ion-card-content>
-      <ion-img src="http://localhost:8000/storage/pictures/{{product.picture}}"></ion-img>
-      <ion-item>        
+      <ion-img src="{{url}}storage/pictures/{{product.picture}}"></ion-img>
+      <ion-item lines="none">        
         <ion-label>{{product.stock}} disponible</ion-label>
         <ion-button fill="outline" slot="end">Ajouter</ion-button>
       </ion-item>
