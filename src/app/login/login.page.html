@@ -14,24 +14,24 @@
   </ion-header>
 
   <ion-item>
-    <ion-label position="stacked">Firstname:</ion-label>
-    <ion-input></ion-input>
+    <ion-label position="stacked">Firstname</ion-label>
+    <ion-input type="text" [(ngModel)]="firstnameInput"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label position="stacked">Lastname:</ion-label>
-    <ion-input></ion-input>
+    <ion-label position="stacked">Lastname</ion-label>
+    <ion-input type="text" [(ngModel)]="lastnameInput"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="stacked">Phone Number</ion-label>
-    <ion-input></ion-input>
+    <ion-input type="tel" [(ngModel)]="phoneInput"></ion-input>
   </ion-item>
   <br>
-  <ion-button expand="block" color="primary">Sign Up</ion-button>
+  <ion-button (click)="signup()" expand="block" color="primary">Sign Up</ion-button>
   <br>
   <ion-item>
     <ion-label position="stacked">Have a token ? Enter it here!</ion-label>
-    <ion-input></ion-input>
+    <ion-input [(ngModel)]="tokenInput"></ion-input>
   </ion-item>
   <br>
-  <ion-button expand="block" color="primary">Login</ion-button>
+  <ion-button (click)="login()" expand="block" color="primary">Login</ion-button>
 </ion-content>
