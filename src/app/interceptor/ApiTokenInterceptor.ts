@@ -6,21 +6,24 @@ import{
     HttpRequest,
 } from '@angular/common/http';
 import {from, Observable} from 'rxjs';
+import { DataCoreProvider } from 'src/providers/dataprovider';
 
 @Injectable()
 export class ApiTokenInterceptor implements HttpInterceptor {
+     
+    public data: DataCoreProvider;
 
     constructor(){}
 
-    intercept(
-        req: HttpRequest<any>,
-        next: HttpHandler
+    public intercept(
+        req:HttpRequest<any>,
+        next:HttpHandler
     ): Observable<HttpEvent<any>> {
         req = req.clone({
             setHeaders: {
                 'Content-Type'  :   'application/json, charset=utf-8',
                 Accept          :   'application/json',
-                Authorization   :   'Bearer nBHdWXo7apjzSdYovxIHN8EOio5DFA',
+                Authorization   :   'Bearer ' + this.data.getToken(),  // nBHdWXo7apjzSdYovxIHN8EOio5DFA
             },
         });
         return next.handle(req);
