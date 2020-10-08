@@ -5,6 +5,9 @@ import { DataCoreProvider } from 'src/providers/dataprovider';
 import { HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 
+import {  MenuController } from '@ionic/angular';
+import { ApiService } from '../services/api.service';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -12,7 +15,8 @@ import { Storage } from '@ionic/storage';
 })
 export class LoginPage implements OnInit {
 
-  public data: DataCoreProvider;
+  public data: DataCoreProvider
+  public menu: MenuController
 
   // To not crash on startup
   private firstnameInput
@@ -21,12 +25,13 @@ export class LoginPage implements OnInit {
 
   private tokenInput
 
-  constructor(private router: Router, storage: Storage, private http: HttpClient) {
-    this.data = new DataCoreProvider(storage, http)
+  constructor(private router: Router, storage: Storage, private http: HttpClient, public menuCtrl: MenuController, private apiService: ApiService) {
+    this.data = new DataCoreProvider(storage, http, apiService)
     this.data.init()
   }
 
   ngOnInit() {
+    
   }
 
   signup(){
@@ -34,15 +39,19 @@ export class LoginPage implements OnInit {
     console.log(this.lastnameInput)
     console.log(this.phoneInput)
 
-    // API request to create a new user
-
-    
+    // API request to create a new user    
 
   }  
 
   login(){
     this.data.setToken(this.tokenInput) // Put the token in the local storage
-    this.router.navigate(['market']); // Navigate to homepage
+    this.menuCtrl.enable(true) // Reenable the side-menu
+    this.router.navigate(['market']) // Navigate to homepage
+  } 
+
+
+  ionViewWillEnter(){
+    this.menuCtrl.enable(false)
   }
 
 }

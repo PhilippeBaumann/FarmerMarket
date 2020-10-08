@@ -16,7 +16,7 @@
 
   <ion-card *ngFor="let product of data.vegetables">
     <ion-card-header>
-      <ion-card-subtitle>{{product.price}} CHF Par {{product.unit}}</ion-card-subtitle>
+      <ion-card-subtitle>{{product.stock}} unitée(s) disponible</ion-card-subtitle>
       <ion-card-title>{{product.name}}</ion-card-title>     
     </ion-card-header>
     
@@ -25,7 +25,7 @@
     <ion-card-content>
       <ion-img src="{{url}}storage/pictures/{{product.picture}}"></ion-img>
       <ion-item lines="none">        
-        <ion-label>{{product.stock}} disponible</ion-label>
+        <ion-label>{{product.price}} CHF / {{product.unit}}</ion-label>
         <ion-button fill="outline" slot="end">Ajouter</ion-button>
       </ion-item>
     </ion-card-content>

@@ -10,6 +10,7 @@ import { resolve } from 'url';
 // Models Import
 import { Vegetable } from '../models/vegetables';
 import { User } from 'src/models/users';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Injectable()
 
@@ -17,20 +18,20 @@ import { User } from 'src/models/users';
 export class DataCoreProvider {
 
     public vegetables;
-    public user;
-    private api: ApiService;
+    public user;    
 
-    public url = 'http://vedjiz.mycpnv.ch/api/';
+    private url; 
     
     public lastRefresh;
 
-    public token;
+    public token;    
 
-    constructor(private storage: Storage, private http: HttpClient){ }
+    constructor(private storage: Storage, private http: HttpClient, public api: ApiService){ }
 
     init() {
 
-        
+        this.url = this.api.getURL()
+
         this.user = []
         this.vegetables = []
 
@@ -100,7 +101,7 @@ export class DataCoreProvider {
         this.storage.set('token', token)
     }
 
-    // Retri token into the local storage
+    // Retrive token from the local storage
     public getToken() {        
         this.storage.get('token').then((val) => {
             this.token =  val

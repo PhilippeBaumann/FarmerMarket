@@ -16,7 +16,7 @@ export class MarketPage implements OnInit {
 
   public data: DataCoreProvider;
 
-  private url = "http://vedjiz.mycpnv.ch/";
+  private url
 
   constructor(
     private router: Router,
@@ -24,7 +24,8 @@ export class MarketPage implements OnInit {
     private http: HttpClient,
     private apiService: ApiService,
   ) {
-    this.data = new DataCoreProvider(storage, http);
+    this.data = new DataCoreProvider(storage, http, apiService);
+    this.url = this.apiService.getURL().replace('/api','');
     this.data.init();
   }
 

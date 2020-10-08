@@ -21,7 +21,7 @@ export class SettingsPage implements OnInit {
     private http: HttpClient,
     private apiService: ApiService,
   ) {
-    this.data = new DataCoreProvider(storage, http);
+    this.data = new DataCoreProvider(storage, http, apiService);
     this.data.init();
   }
 

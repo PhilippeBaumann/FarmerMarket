@@ -9,11 +9,9 @@ import {from, Observable} from 'rxjs';
 import { DataCoreProvider } from 'src/providers/dataprovider';
 
 @Injectable()
-export class ApiTokenInterceptor implements HttpInterceptor {
-     
-    public data: DataCoreProvider;
+export class ApiTokenInterceptor implements HttpInterceptor {  
 
-    constructor(){}
+    constructor(public data: DataCoreProvider){}
 
     public intercept(
         req:HttpRequest<any>,

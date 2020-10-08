@@ -8,22 +8,26 @@ import { Observable } from 'rxjs';
 export class ApiService {
 
   // Prefixed API URL
-  //public url = 'http://localhost:8000/api/';
-  public url = 'http://vedjiz.mycpnv.ch/api/';
+  private url = 'http://localhost:8000/api/';
+  //public url = 'http://vedjiz.mycpnv.ch/api/';
 
   results: Observable<any>;
 
   //constructor(private apiServer: ApiService, private http: HttpClient) {
   constructor(private http: HttpClient) {
       
-  } 
+  }
+
+  getURL(){
+    return this.url
+  }
 
   getProducts(){
-    return this.http.get(this.url + "products");
+    return this.http.get(this.url + "products")
   }
 
   getUser(id){
-    return this.http.get(this.url + "me");
+    return this.http.get(this.url + "me")
   }
 
   registerUser(firstname, lastname, phonenumber){
