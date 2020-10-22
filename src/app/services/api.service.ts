@@ -1,3 +1,4 @@
+import { Data } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -32,10 +33,15 @@ export class ApiService {
 
   registerUser(firstname, lastname, phonenumber){
     let postData = {
-        "firstnameme": firstname,
+        "firstname": firstname,
         "lastname": lastname,
         "phonenumber": phonenumber
     }
-    return this.http.post(this.url + "user/apply", postData);
+    this.http.post(this.url + "user/apply", postData)
+    .subscribe(data => {
+      console.log(data['_body'])
+    }, error => {
+      console.log(error)           
+    });
   }
 }
