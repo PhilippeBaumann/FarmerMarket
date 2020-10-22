@@ -19,3 +19,10 @@ ion-menu-button {
   #container a {
     text-decoration: none;
   }
+
+  .validation-errors{
+    padding-left: 5%;
+    padding-top: 8px;
+    color: red;
+    font-weight: 500;
+  }

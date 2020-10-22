@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 
 import { DataCoreProvider } from 'src/providers/dataprovider';
 import { Storage } from '@ionic/storage';
-
+import { ToastController } from '@ionic/angular';
 import {  MenuController } from '@ionic/angular';
 import { ApiService } from '../services/api.service';
+import { Validators, FormBuilder} from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -13,17 +14,52 @@ import { ApiService } from '../services/api.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  
+
+  // Toasts
+
+  async presentToast(message) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 3000
+    });
+    toast.present();
+  }
+
+  // Menu Sidebar Controls
+
   public menu: MenuController
 
-  // To not crash on startup, declaring textfiled values
-  private firstnameInput
-  private lastnameInput
-  private phoneInput
+  // Registration Form Validation  
 
-  private tokenInput
+  registrationForm = this.formBuilder.group({
+    firstname: ["", [Validators.required, Validators.minLength(2)]],
+    lastname: ["", [Validators.required, Validators.minLength(2)]],
+    phone: ["", [Validators.required, Validators.minLength(9), Validators.pattern('[0][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')]],
+  })
 
-  constructor(private router: Router, private storage: Storage, public menuCtrl: MenuController, private apiService: ApiService, public data: DataCoreProvider) {
+  get firstname() {
+    return this.registrationForm.get('firstname')
+  }
+
+  get lastname() {
+    return this.registrationForm.get('lastname')
+  }
+
+  get phone() {
+    return this.registrationForm.get('phone')
+  }
+  
+  // Token Form Validation  
+
+  tokenForm = this.formBuilder.group({
+    token: ["", [Validators.required, Validators.minLength(60)]]
+  })
+
+  get token() {
+    return this.tokenForm.get('token')
+  } 
+
+  constructor(private router: Router, private storage: Storage, public menuCtrl: MenuController, private apiService: ApiService, public data: DataCoreProvider, private formBuilder: FormBuilder, public toastController: ToastController) {
   }
 
   ngOnInit() {
@@ -37,23 +73,54 @@ export class LoginPage implements OnInit {
       else{
         this.menuCtrl.enable(false)
       }
-    })    
+    })
   }
 
   signup(){
-    console.log(this.firstnameInput)
-    console.log(this.lastnameInput)
-    console.log(this.phoneInput)
+
+    // Text Control
+
+    console.log(this.registrationForm.value['firstname'])
+    console.log(this.registrationForm.value['lastname'])
+    console.log(this.registrationForm.value['phone'])   
 
     // API request to create a new user
-
-    this.apiService.registerUser(this.firstnameInput, this.lastnameInput, this.phoneInput)
-
+    this.apiService.registerUser(this.registrationForm.value['firstname'], this.registrationForm.value['lastname'], this.registrationForm.value['phone']).subscribe(data =>
+      {
+        console.log(data)
+      }, error =>
+      {
+        // Prompt User that the inscription has failed and show him what went wrong (uf?)
+        //console.log(error['error'])
+        this.presentToast('The following error ocurred: ' +error['error'])
+      }, () => {
+        // Prompt User that the inscription has been accepted
+        this.presentToast('Registration Successful')
+      })
   }  
 
   login(){
-    this.data.setToken(this.tokenInput) // Put the token in the local storage
+    this.data.setToken(this.tokenForm.value['token']) // Put the token in the local storage
     this.menuCtrl.enable(true) // Reenable the side-menu
     this.router.navigate(['market']) // Navigate to homepage
   }
+  
+  // Validation
+
+  validation_messages = {
+    'name': [
+      { type: 'required', message: 'This field is required.' },
+      { type: 'minlength', message: 'This field must be at least 2 characters long.' },
+      //{ type: 'pattern', message: 'This field must contain only letters.' },
+    ],
+    'phone': [
+      { type: 'required', message: 'A phone number is required.' },
+      { type: 'minlength', message: 'This field must be at least 9 characters long.' },
+      { type: 'pattern', message: 'This field must contain a valid phone number.' },
+    ],
+    'token': [
+      { type: 'required', message: 'A token is required.' },
+      { type: 'minlength', message: 'Token must be at least 60 characters long.' },
+    ],
+    }
 }

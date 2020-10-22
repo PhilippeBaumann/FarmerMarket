@@ -1,37 +1,79 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-    </ion-buttons>
-    <ion-title>Welcome to Vedjiz</ion-title>
-  </ion-toolbar>
-</ion-header>
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+      </ion-buttons>
+      <ion-title>Welcome to Vedjiz</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-<ion-content [fullscreen]="true">
+  <ion-content [fullscreen]="true">  
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Welcome to Vedjiz</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <ion-item>
-    <ion-label position="stacked">Firstname</ion-label>
-    <ion-input type="text" [(ngModel)]="firstnameInput"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="stacked">Lastname</ion-label>
-    <ion-input type="text" [(ngModel)]="lastnameInput"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="stacked">Phone Number</ion-label>
-    <ion-input type="tel" [(ngModel)]="phoneInput"></ion-input>
-  </ion-item>
-  <br>
-  <ion-button (click)="signup()" expand="block" color="primary">Sign Up</ion-button>
-  <br>
-  <ion-item>
-    <ion-label position="stacked">Have a token ? Enter it here!</ion-label>
-    <ion-input [(ngModel)]="tokenInput"></ion-input>
-  </ion-item>
-  <br>
-  <ion-button (click)="login()" expand="block" color="primary">Login</ion-button>
+  <!-- Registration Form -->
+  <form [formGroup]="registrationForm" (ngSubmit)="signup()">
+
+    <!-- Firstname Input -->
+    <ion-item>
+      <ion-label position="stacked">Firstname</ion-label>
+      <ion-input type="text" formControlName="firstname" required></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.name">
+        <div class="error-message" *ngIf="firstname.hasError(validation.type) && (firstname.dirty || firstname.touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Lastname Input -->
+    <ion-item>
+      <ion-label position="stacked">Lastname</ion-label>
+      <ion-input type="text" formControlName="lastname" required></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.name">
+        <div class="error-message" *ngIf="lastname.hasError(validation.type) && (lastname.dirty || lastname.touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Phone Number Input -->
+    <ion-item>
+      <ion-label position="stacked">Phone Number</ion-label>
+      <ion-input type="phone"  placeholder="07XXXXXXX" formControlName="phone" required></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.phone">
+        <div class="error-message" *ngIf="phone.hasError(validation.type) && (phone.dirty || phone.touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <br>
+      <ion-button [disabled]="!registrationForm.valid" (click)="signup()" expand="block" color="primary">Sign Up</ion-button>
+    <br>
+  </form>
+
+  <!-- Token Form -->
+  <form [formGroup]="tokenForm" (ngSubmit)="login()">
+    <ion-item>
+      <ion-label position="stacked">Token</ion-label>
+      <ion-input type="text" placeholder="Have a token ? Enter it here!" formControlName="token" required></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.token">
+        <div class="error-message" *ngIf="token.hasError(validation.type) && (token.dirty || token.touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+    <br>
+    <ion-button [disabled]="!tokenForm.valid" (click)="login()" expand="block" color="primary">Login</ion-button>
+  </form>
 </ion-content>
