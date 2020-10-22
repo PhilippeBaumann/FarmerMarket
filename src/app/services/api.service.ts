@@ -28,7 +28,11 @@ export class ApiService {
     return this.http.get(this.url + "me")
   }
 
-  registerUser(firstname, lastname, phonenumber) { 
+  checkToken(){
+    return this.http.get(this.url + "me")
+  }
+
+  registerUser(firstname, lastname, phonenumber) {
     let postData = {
         "firstname": firstname,
         "lastname": lastname,

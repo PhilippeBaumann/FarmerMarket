@@ -91,8 +91,11 @@ export class LoginPage implements OnInit {
       }, error =>
       {
         // Prompt User that the inscription has failed and show him what went wrong (uf?)
-        //console.log(error['error'])
-        this.presentToast('The following error ocurred: ' +error['error'])
+        if (error['error'] ==  '[object ProgressEvent]') {
+          this.presentToast('Could not establish connection to the API')
+        } else {
+          this.presentToast('The following error ocurred: ' +error['error'])
+        }        
       }, () => {
         // Prompt User that the inscription has been accepted
         this.presentToast('Registration Successful')
@@ -100,9 +103,28 @@ export class LoginPage implements OnInit {
   }  
 
   login(){
-    this.data.setToken(this.tokenForm.value['token']) // Put the token in the local storage
-    this.menuCtrl.enable(true) // Reenable the side-menu
-    this.router.navigate(['market']) // Navigate to homepage
+    // API Request to test Token validity
+    this.apiService.getUser().subscribe(data =>
+      {
+        console.log(data)
+      }, error =>
+      {
+        // Prompt User that the token is invalid
+        if (error['error'] ==  '[object ProgressEvent]') {
+          this.presentToast('Could not establish connection to the API')
+        } else {
+          this.presentToast('The following error ocurred: ' +error['error'])
+        }        
+      }, () => {
+        // Prompt User that the inscription has been accepted
+        this.presentToast('Login Successful')
+        // Put the token in the local storage
+        this.data.setToken(this.tokenForm.value['token']) 
+        // Reenable the side-menu
+        this.menuCtrl.enable(true)
+        // Navigate to "UserSettings"
+        this.router.navigate(['settings'])
+      })    
   }
   
   // Validation
@@ -120,7 +142,7 @@ export class LoginPage implements OnInit {
     ],
     'token': [
       { type: 'required', message: 'A token is required.' },
-      { type: 'minlength', message: 'Token must be at least 60 characters long.' },
+      { type: 'minlength', message: 'Token must be 60 characters long.' },
     ],
     }
 }
