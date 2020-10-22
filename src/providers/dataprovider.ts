@@ -30,6 +30,7 @@ export class DataCoreProvider {
 
     init() {
 
+        // Get the current API URL from the ApiService Module
         this.url = this.api.getURL()
 
         this.user = []
@@ -38,11 +39,8 @@ export class DataCoreProvider {
         // Load data via the local storage
         // this.loadStorage();
 
+        // Loads everything from the API not just specific fields or data
         this.getFromAPI()
-
-        /*       
-        console.log('Data successfully inserted');
-        */
     }
   
     public store() {
@@ -70,6 +68,7 @@ export class DataCoreProvider {
 
     
     // Access the API trough a specific Path and Load the result Into the object Collection
+    // To migrate into Api.service eventually !
     public getFromAPI(): Promise<any> {
         return new Promise<any>( (resolve, reject) => {
             this.http.get<Vegetable[]>(this.url + 'products').subscribe(results => {
@@ -102,12 +101,20 @@ export class DataCoreProvider {
     }
 
     // Retrive token from the local storage
-    public getToken() {        
-        this.storage.get('token').then((val) => {
-            this.token =  val
+    public getToken() {
+        this.storage.ready().then(() => {      
+            this.storage.get('token').then((val) => {
+                this.token =  val
+            })
         })
         return this.token
     }
+
+    // Delete the token from the the storage
+    public deleteToken(){
+        this.storage.remove('token')
+    }
+    
 
     public find(id) {
         return new Promise<any>( (resolve, reject) => {

@@ -32,10 +32,10 @@ export class ApiService {
 
   registerUser(firstname, lastname, phonenumber){
     let postData = {
-        "nafirstnameme": firstname,
+        "firstnameme": firstname,
         "lastname": lastname,
         "phonenumber": phonenumber
     }
-    return this.http.post(this.url + '/user/apply', postData);
+    return this.http.post(this.url + "user/apply", postData);
   }
 }

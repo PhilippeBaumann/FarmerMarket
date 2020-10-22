@@ -28,4 +28,8 @@ export class SettingsPage implements OnInit {
   ngOnInit() {
   }
 
+  logout(){
+    this.data.deleteToken()
+    this.router.navigate(['login'])
+  }
 }
