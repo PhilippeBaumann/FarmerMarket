@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { DataCoreProvider } from 'src/providers/dataprovider';
 import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
-import {  MenuController } from '@ionic/angular';
+import { MenuController } from '@ionic/angular';
 import { ApiService } from '../services/api.service';
 import { Validators, FormBuilder} from '@angular/forms';
 
@@ -67,7 +67,8 @@ export class LoginPage implements OnInit {
     // CHECK WHY THE GET TOKEN FUNCTION IN Data IS NOT WORKING !!
     // Check if the token is available in the storage
     this.storage.get('token').then((val) => {
-      if (val != undefined) {      
+      if (val != undefined) {
+        this.apiService.updateToken(val)
         this.router.navigate(['market'])
       }
       else{
@@ -94,7 +95,7 @@ export class LoginPage implements OnInit {
         if (error['error'] ==  '[object ProgressEvent]') {
           this.presentToast('Could not establish connection to the API')
         } else {
-          this.presentToast('The following error ocurred: ' +error['error'])
+          this.presentToast('The following error ocurred: ' + error['error'])
         }        
       }, () => {
         // Prompt User that the inscription has been accepted
@@ -103,23 +104,30 @@ export class LoginPage implements OnInit {
   }  
 
   login(){
+
+    // Put the token in the local storage so the API service can check if it is valid
+    //this.data.setToken(this.tokenForm.value['token'])
+
     // API Request to test Token validity
-    this.apiService.getUser().subscribe(data =>
+    this.apiService.checkToken(this.tokenForm.value['token']).subscribe(data =>
       {
         console.log(data)
       }, error =>
       {
-        // Prompt User that the token is invalid
+        // Prompt User that the token or the API is invalid
         if (error['error'] ==  '[object ProgressEvent]') {
           this.presentToast('Could not establish connection to the API')
         } else {
-          this.presentToast('The following error ocurred: ' +error['error'])
-        }        
+          this.presentToast('The following error ocurred: ' + error['error']['message'])
+          console.log(error)
+        }
+        // Delete the invalid token
+        this.data.deleteToken()
       }, () => {
         // Prompt User that the inscription has been accepted
         this.presentToast('Login Successful')
         // Put the token in the local storage
-        this.data.setToken(this.tokenForm.value['token']) 
+        this.data.setToken(this.tokenForm.value['token'])
         // Reenable the side-menu
         this.menuCtrl.enable(true)
         // Navigate to "UserSettings"

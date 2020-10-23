@@ -21,8 +21,8 @@ export class SettingsPage implements OnInit {
     private http: HttpClient,
     private apiService: ApiService,
   ) {
-    this.data = new DataCoreProvider(storage, http, apiService);
-    this.data.init();
+    this.data = new DataCoreProvider(storage, http, apiService)
+    this.data.init()
   }
 
   ngOnInit() {
@@ -30,6 +30,7 @@ export class SettingsPage implements OnInit {
 
   logout(){
     this.data.deleteToken()
+    //this.data.deleteStorage()
     this.router.navigate(['login'])
   }
 }

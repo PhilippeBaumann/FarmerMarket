@@ -17,30 +17,27 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 export class DataCoreProvider {
 
-    public vegetables;
-    public user;    
+    public vegetables = [];
+    public user = [];
 
-    private url; 
-    
+    private url;
+
     public lastRefresh;
 
-    public token;    
+    public token;
 
     constructor(private storage: Storage, private http: HttpClient, public api: ApiService){ }
 
     init() {
 
         // Get the current API URL from the ApiService Module
-        this.url = this.api.getURL()
-
-        this.user = []
-        this.vegetables = []
+        this.url = this.api.getURL()        
 
         // Load data via the local storage
-        // this.loadStorage();
+        this.loadStorage();
 
         // Loads everything from the API not just specific fields or data
-        this.getFromAPI()
+        //this.getFromAPI()
     }
   
     public store() {
@@ -49,39 +46,37 @@ export class DataCoreProvider {
 
     
     public loadStorage() {
-        this.storage.ready().then(() => {
-            this.storage.get('products').then((data) => {
-                this.vegetables = data;
-                // checking for values in the storage if non Load it From the API
-                if (this.storage === null) {
-                    console.log('Data Storage Empty');
-                    // Load assets via the API service
-                    this.getFromAPI();
-                    console.log('Data Storage filled From API');
-                } else {
-                    console.log('Data successfully loaded');
-                }
-                this.lastRefresh = new Date().toLocaleTimeString() + ' ' + new Date().toLocaleDateString();
-            });
-        });
+        this.storage.ready().then(() => {            
+            // If the storage is empty load the values from the API
+            this.storage.get('user').then((data) => {
+                if (data == undefined){
+                    console.log('Data Storage Empty')
+                    // Load assets via the API
+                    this.getAPIdata();
+                    console.log('Data Storage filled From API')
+                } else {                
+                    this.storage.get('products').then((data) =>{ this.vegetables = data })
+                    this.storage.get('user').then((data) =>{ this.user = data })
+                    console.log('Data successfully loaded from localstorage')
+                }   
+                this.lastRefresh = new Date().toLocaleTimeString() + ' ' + new Date().toLocaleDateString()
+            })
+        })
     }
 
     
     // Access the API trough a specific Path and Load the result Into the object Collection
-    // To migrate into Api.service eventually !
-    public getFromAPI(): Promise<any> {
-        return new Promise<any>( (resolve, reject) => {
-            this.http.get<Vegetable[]>(this.url + 'products').subscribe(results => {
-                console.log(results)
-                this.vegetables = results['data']
-                this.setVegetables(this.vegetables)
-            });
-            this.http.get<User[]>(this.url + 'me').subscribe(results => {
-                console.log(results)
-                this.user = results['data']
-                this.setUser(this.user)
-            });
-        })        
+    private getAPIdata() {        
+        this.api.getProducts().subscribe(results => {
+            console.log(results)
+            this.vegetables = results['data']
+            this.setVegetables(this.vegetables)
+        });
+        this.api.getUser().subscribe(results => {
+            console.log(results)
+            this.user = results['data']
+            this.setUser(this.user)
+        })
     }
     
 
@@ -113,6 +108,10 @@ export class DataCoreProvider {
     // Delete the token from the the storage
     public deleteToken(){
         this.storage.remove('token')
+    }
+
+    public deleteStorage(){
+        this.storage.clear()
     }
     
 

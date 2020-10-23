@@ -1,5 +1,5 @@
 import { DataCoreProvider } from './../providers/dataprovider';
-import { ApiTokenInterceptor } from './interceptor/ApiTokenInterceptor';
+//import { ApiTokenInterceptor } from './interceptor/ApiTokenInterceptor';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -30,7 +30,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: HTTP_INTERCEPTORS, useClass: ApiTokenInterceptor , multi: true },
+    //{ provide: HTTP_INTERCEPTORS, useClass: ApiTokenInterceptor , multi: true },
     DataCoreProvider,
     HttpClient
   ],
