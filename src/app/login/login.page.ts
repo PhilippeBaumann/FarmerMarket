@@ -16,9 +16,10 @@ import { Validators, FormBuilder} from '@angular/forms';
 export class LoginPage implements OnInit {
 
   // Toasts
-  async presentToast(message) {
+  async presentToast(message, position) {
     const toast = await this.toastController.create({
       message: message,
+      position: position,
       duration: 3000
     });
     toast.present();
@@ -60,15 +61,28 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
 
+    
+
     // Check if the token is available in the storage
     this.storage.get('token').then((val) => {
       if (val != undefined) {
+        // Update token for next API requests (optional)
         this.apiService.updateToken(val)
-        // Populate storage with user data from the API
-        this.data.getAndSaveUserDataFromAPI()
-        this.router.navigate(['settings'])
+
+        // API Request to test if the connection is still valid
+        this.apiService.checkToken(val).subscribe(data =>{},
+          error =>
+          {
+            // Prompt User that the token or the API is invalid
+            this.presentToast('Could not establish connection to the API', 'middle')
+          }, () =>
+          {
+            // Populate storage with user data from the API
+            this.data.getAndSaveUserDataFromAPI()
+            this.router.navigate(['settings'])
+          })
       }
-      else{
+      else {
         this.menuCtrl.enable(false)
       }
     })
@@ -89,13 +103,13 @@ export class LoginPage implements OnInit {
       {
         // Prompt User that the inscription has failed and show him what went wrong (uf?)
         if (error['error'] ==  '[object ProgressEvent]') {
-          this.presentToast('Could not establish connection to the API')
+          this.presentToast('Could not establish connection to the API', 'middle')
         } else {
-          this.presentToast('The following error ocurred: ' + error['error'])
+          this.presentToast('The following error ocurred: ' + error['error'], 'bottom')
         }        
       }, () => {
         // Prompt User that the inscription has been accepted
-        this.presentToast('Registration Successful')
+        this.presentToast('Registration Successful', 'bottom')
       })
   }  
 
@@ -112,16 +126,16 @@ export class LoginPage implements OnInit {
       {
         // Prompt User that the token or the API is invalid
         if (error['error'] ==  '[object ProgressEvent]') {
-          this.presentToast('Could not establish connection to the API')
+          this.presentToast('Could not establish connection to the API', 'middle')
         } else {
-          this.presentToast('The following error ocurred: ' + error['error']['message'])
+          this.presentToast('Invalid Token', 'bottom' /* + error['error']['message']*/)
           console.log(error)
         }
         // Delete the invalid token
         this.data.deleteToken()
       }, () => {
         // Prompt User that the inscription has been accepted
-        this.presentToast('Login Successful')
+        this.presentToast('Login Successful', 'bottom')
         // Put the token in the local storage
         this.data.setToken(this.tokenForm.value['token'])
         // Reenable the side-menu
