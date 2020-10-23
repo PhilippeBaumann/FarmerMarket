@@ -14,14 +14,54 @@
     </ion-toolbar>
   </ion-header>
 
+  <ion-item lines="none">
+    <ion-label>
+      Last update: {{data.lastRefresh}}
+    </ion-label>
+  </ion-item>
+  
+
+  <!-- 2 by 2 -->
+
+  <ion-row>
+    <ion-col size="6" *ngFor="let product of data.vegetables">
+      <ion-card style="margin: 0">
+        <ion-card-header>
+          <ion-card-subtitle>En Stock: {{product.stock}}</ion-card-subtitle>
+          <ion-card-title>{{product.name}}</ion-card-title>     
+        </ion-card-header>
+        <ion-card-content style="display: flex; flex-wrap: wrap; justify-content: center;">
+          <ion-img src="{{url}}storage/pictures/{{product.picture}}" style="height: 100px"></ion-img>
+          <ion-label>{{product.price}} CHF / {{product.unit}}</ion-label>
+          <ion-button fill="outline" slot="end">Ajouter</ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+  <!-- Mid Size -->
+
   <ion-card *ngFor="let product of data.vegetables">
     <ion-card-header>
       <ion-card-subtitle>{{product.stock}} unitée(s) disponible</ion-card-subtitle>
       <ion-card-title>{{product.name}}</ion-card-title>     
     </ion-card-header>
-    
-      
-  
+    <ion-card-content>
+      <ion-img src="{{url}}storage/pictures/{{product.picture}}" style="height: 120px"></ion-img>
+      <ion-item lines="none">        
+        <ion-label>{{product.price}} CHF / {{product.unit}}</ion-label>
+        <ion-button fill="outline" slot="end">Ajouter</ion-button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Full Size -->
+
+  <ion-card *ngFor="let product of data.vegetables">
+    <ion-card-header>
+      <ion-card-subtitle>{{product.stock}} unitée(s) disponible</ion-card-subtitle>
+      <ion-card-title>{{product.name}}</ion-card-title>     
+    </ion-card-header>
     <ion-card-content>
       <ion-img src="{{url}}storage/pictures/{{product.picture}}"></ion-img>
       <ion-item lines="none">        

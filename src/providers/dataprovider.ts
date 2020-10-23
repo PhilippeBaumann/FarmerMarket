@@ -59,7 +59,7 @@ export class DataCoreProvider {
                     this.storage.get('user').then((data) =>{ this.user = data })
                     console.log('Data successfully loaded from localstorage')
                 }   
-                this.lastRefresh = new Date().toLocaleTimeString() + ' ' + new Date().toLocaleDateString()
+                this.lastRefresh = new Date().toLocaleDateString() /* + ' ' + new Date().toLocaleTimeString() */
             })
         })
     }
