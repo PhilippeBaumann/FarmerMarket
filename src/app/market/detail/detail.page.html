@@ -1,0 +1,31 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Detail</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Detail</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>{{product.stock}} unitée(s) disponible</ion-card-subtitle>
+      <ion-card-title>{{product.name}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-img src="{{url}}storage/pictures/{{product.picture}}"></ion-img>
+      <ion-item lines="none">        
+        <ion-label>{{product.price}} CHF / {{product.unit}}</ion-label>
+        <ion-button fill="outline" slot="end">Ajouter</ion-button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

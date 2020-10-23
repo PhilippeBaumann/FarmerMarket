@@ -1,16 +1,10 @@
 import { Storage } from '@ionic/storage';
-import {Data} from '@angular/router';
-import {init} from 'protractor/built/launcher';
 import {ApiService} from '../app/services/api.service';
-import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import { resolve } from 'url';
 
 // Models Import
 import { Vegetable } from '../models/vegetables';
 import { User } from 'src/models/users';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Injectable()
 
@@ -20,18 +14,13 @@ export class DataCoreProvider {
     public vegetables = [];
     public user = [];
 
-    private url;
-
     public lastRefresh;
 
     public token;
 
-    constructor(private storage: Storage, private http: HttpClient, public api: ApiService){ }
+    constructor(private storage: Storage, public api: ApiService){ }
 
-    init() {
-
-        // Get the current API URL from the ApiService Module
-        this.url = this.api.getURL()        
+    init() {        
 
         // Load data via the local storage
         this.loadStorage();

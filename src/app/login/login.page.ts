@@ -67,7 +67,7 @@ export class LoginPage implements OnInit {
     this.storage.get('token').then((val) => {
       if (val != undefined) {
         // Update token for next API requests (optional)
-        this.apiService.updateToken(val)
+        this.apiService.testToken(val)
 
         // API Request to test if the connection is still valid
         this.apiService.checkToken(val).subscribe(data =>{},

@@ -13,6 +13,8 @@ import { ToastController } from '@ionic/angular';
 })
 export class SettingsPage implements OnInit {
 
+
+
   // Try to access already initialized data or refresh it
   public data: DataCoreProvider;
   
@@ -45,11 +47,10 @@ export class SettingsPage implements OnInit {
   constructor(
     private router: Router,
     storage: Storage,
-    private http: HttpClient,
     private apiService: ApiService,
     private toastController: ToastController,
   ) {
-    this.data = new DataCoreProvider(storage, http, apiService)
+    this.data = new DataCoreProvider(storage, apiService)
     this.data.init()
   }
 

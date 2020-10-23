@@ -22,9 +22,9 @@
   
 
   <!-- 2 by 2 -->
-
+ 
   <ion-row>
-    <ion-col size="6" *ngFor="let product of data.vegetables">
+    <ion-col size="6" *ngFor="let product of data.vegetables" (click)="openDetails(product.id)">
       <ion-card style="margin: 0">
         <ion-card-header>
           <ion-card-subtitle>En Stock: {{product.stock}}</ion-card-subtitle>
@@ -33,13 +33,13 @@
         <ion-card-content style="display: flex; flex-wrap: wrap; justify-content: center;">
           <ion-img src="{{url}}storage/pictures/{{product.picture}}" style="height: 100px"></ion-img>
           <ion-label>{{product.price}} CHF / {{product.unit}}</ion-label>
-          <ion-button fill="outline" slot="end">Ajouter</ion-button>
+          <!--<ion-button (click)="addToBag(product.id)" fill="outline" slot="end">Ajouter</ion-button>-->
         </ion-card-content>
       </ion-card>
     </ion-col>
   </ion-row>
 
-  <!-- Mid Size -->
+  <!-- Mid Size 
 
   <ion-card *ngFor="let product of data.vegetables">
     <ion-card-header>
@@ -55,7 +55,7 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Full Size -->
+  Full Size
 
   <ion-card *ngFor="let product of data.vegetables">
     <ion-card-header>
@@ -70,3 +70,5 @@
       </ion-item>
     </ion-card-content>
   </ion-card>
+  -->
+</ion-content>

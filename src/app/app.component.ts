@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
     private apiService: ApiService,
   ) {
     this.initializeApp();
-    this.data = new DataCoreProvider(storage, http, apiService);
+    this.data = new DataCoreProvider(storage, apiService);
     this.data.init();
   }
 
