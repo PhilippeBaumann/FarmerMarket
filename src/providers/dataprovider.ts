@@ -67,18 +67,23 @@ export class DataCoreProvider {
     
     // Access the API trough a specific Path and Load the result Into the object Collection
     private getAPIdata() {        
-        this.api.getProducts().subscribe(results => {
-            console.log(results)
-            this.vegetables = results['data']
-            this.setVegetables(this.vegetables)
-        });
+        this.getAndSaveProductsDataFromAPI()
+        this.getAndSaveUserDataFromAPI()
+    }
+
+    public getAndSaveUserDataFromAPI(){
         this.api.getUser().subscribe(results => {
-            console.log(results)
             this.user = results['data']
             this.setUser(this.user)
         })
     }
     
+    public getAndSaveProductsDataFromAPI(){
+        this.api.getProducts().subscribe(results => {
+            this.vegetables = results['data']
+            this.setVegetables(this.vegetables)
+        });
+    }
 
     // Insert the vegetables Into the local storage
     public async setVegetables(vegetables: Vegetable[]) {

@@ -16,7 +16,6 @@ import { Validators, FormBuilder} from '@angular/forms';
 export class LoginPage implements OnInit {
 
   // Toasts
-
   async presentToast(message) {
     const toast = await this.toastController.create({
       message: message,
@@ -26,11 +25,9 @@ export class LoginPage implements OnInit {
   }
 
   // Menu Sidebar Controls
-
   public menu: MenuController
 
-  // Registration Form Validation  
-
+  // Registration Form Validation
   registrationForm = this.formBuilder.group({
     firstname: ["", [Validators.required, Validators.minLength(2)]],
     lastname: ["", [Validators.required, Validators.minLength(2)]],
@@ -49,8 +46,7 @@ export class LoginPage implements OnInit {
     return this.registrationForm.get('phone')
   }
   
-  // Token Form Validation  
-
+  // Token Form Validation
   tokenForm = this.formBuilder.group({
     token: ["", [Validators.required, Validators.minLength(60)]]
   })
@@ -64,12 +60,13 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
 
-    // CHECK WHY THE GET TOKEN FUNCTION IN Data IS NOT WORKING !!
     // Check if the token is available in the storage
     this.storage.get('token').then((val) => {
       if (val != undefined) {
         this.apiService.updateToken(val)
-        this.router.navigate(['market'])
+        // Populate storage with user data from the API
+        this.data.getAndSaveUserDataFromAPI()
+        this.router.navigate(['settings'])
       }
       else{
         this.menuCtrl.enable(false)
@@ -80,7 +77,6 @@ export class LoginPage implements OnInit {
   signup(){
 
     // Text Control
-
     console.log(this.registrationForm.value['firstname'])
     console.log(this.registrationForm.value['lastname'])
     console.log(this.registrationForm.value['phone'])   
@@ -130,13 +126,14 @@ export class LoginPage implements OnInit {
         this.data.setToken(this.tokenForm.value['token'])
         // Reenable the side-menu
         this.menuCtrl.enable(true)
+        // Populate storage with data from the API
+        this.data.init()
         // Navigate to "UserSettings"
         this.router.navigate(['settings'])
       })    
   }
   
-  // Validation
-
+  // Validation Messages
   validation_messages = {
     'name': [
       { type: 'required', message: 'This field is required.' },
