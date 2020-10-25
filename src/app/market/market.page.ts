@@ -14,6 +14,8 @@ export class MarketPage implements OnInit {
 
   public data: DataCoreProvider;
 
+  product = {}
+
   private url
 
   constructor(
@@ -31,7 +33,20 @@ export class MarketPage implements OnInit {
   }
   
   openDetails(id){
-    this.router.navigate(['market/detail/' + id])
+    this.apiService.getProduct(id).subscribe(results => {
+      this.product = results['data']
+      console.log(this.product)
+      let navExtras: NavigationExtras = {
+        state: {
+          product: this.product
+        }
+      }
+      this.router.navigate(['market/detail'], navExtras)
+    }, error =>
+    {
+      console.log(error)
+      console.log('error')
+    })    
   }
 
   addToBag(id){

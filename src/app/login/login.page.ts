@@ -59,9 +59,7 @@ export class LoginPage implements OnInit {
   constructor(private router: Router, private storage: Storage, public menuCtrl: MenuController, private apiService: ApiService, public data: DataCoreProvider, private formBuilder: FormBuilder, public toastController: ToastController) {
   }
 
-  ngOnInit() {
-
-    
+  ngOnInit() {    
 
     // Check if the token is available in the storage
     this.storage.get('token').then((val) => {
@@ -79,6 +77,7 @@ export class LoginPage implements OnInit {
           {
             // Populate storage with user data from the API
             this.data.getAndSaveUserDataFromAPI()
+            // Go to the settings page
             this.router.navigate(['settings'])
           })
       }

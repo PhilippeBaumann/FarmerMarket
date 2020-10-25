@@ -1,7 +1,6 @@
 import { Vegetable } from './../../models/vegetables';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Vegetable } from 'src/models/vegetables';
 import { User } from 'src/models/users';
 import { Storage } from '@ionic/storage';
 
@@ -14,16 +13,16 @@ export class ApiService {
   private url = 'http://localhost:8000/api/';
   //public url = 'http://vedjiz.mycpnv.ch/api/';
 
-  private header = {}
+  header = {}
+    
+  requestOptions = {}
 
-  private requestOptions = {}
-
-  token
+  public token
   
   constructor(private http: HttpClient, private storage: Storage) {}
 
 
-  // Setters
+  /* Setters
 
   public updateToken(){
 
@@ -39,6 +38,7 @@ export class ApiService {
       headers: new HttpHeaders(this.header),
     }
   }
+  */
 
   public testToken(token){
 
@@ -53,16 +53,33 @@ export class ApiService {
     }
   }
 
-  // Storage Getter ?
+  // Get Custom Header
+
+  getHeader(){
+    
+    let headerTemp = {
+      'Content-Type': 'application/json, charset=utf-8',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ' + this.getToken()
+    }
+      
+    let requestOptionsTemp = {
+      headers: new HttpHeaders(headerTemp),
+    }
+
+    return requestOptionsTemp
+  }  
 
   // Retrive token from the local storage
   getToken() {
     this.storage.ready().then(() => {      
-        this.storage.get('token').then((val) => {
-            this.token = val 
+        this.storage.get('token').then((token) => {
+            this.token = token 
         })
     })
+    return this.token
   }
+
 
   // Get Requests
 
@@ -71,17 +88,15 @@ export class ApiService {
   }
 
   getProducts(){
-    return this.http.get<Vegetable[]>(this.url + "products", this.requestOptions)
+    return this.http.get<Vegetable[]>(this.url + "products", this.getHeader())
   }
 
   getProduct(id){
-    this.updateToken()
-    console.log(this.header)
-    return this.http.get<Vegetable>(this.url + "products/" + id, this.requestOptions)
+    return this.http.get(this.url + "products/" + id, this.getHeader())
   }
 
   getUser(){
-    return this.http.get<User[]>(this.url + "me", this.requestOptions)
+    return this.http.get<User[]>(this.url + "me", this.getHeader())
   }
 
   checkToken(token){

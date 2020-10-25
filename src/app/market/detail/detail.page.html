@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>Detail</ion-title>
   </ion-toolbar>
@@ -21,10 +21,17 @@
       <ion-card-title>{{product.name}}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-img src="{{url}}storage/pictures/{{product.picture}}"></ion-img>
+      <ion-img src="{{url}}storage/pictures/{{product.picture}}" style="height: 200px"></ion-img>
       <ion-item lines="none">        
         <ion-label>{{product.price}} CHF / {{product.unit}}</ion-label>
-        <ion-button fill="outline" slot="end">Ajouter</ion-button>
+      </ion-item>
+      <ion-button expand="block" fill="outline" style="margin-bottom: 8px">Ajouter au panier</ion-button>
+      <ion-item lines="none" style="margin-bottom: 8px">
+        <br><ion-text>{{product.details}}</ion-text><br>
+      </ion-item>
+      <ion-label>Fournis par: </ion-label>
+      <ion-item *ngFor="let supplier of product.suppliers" lines="none">
+        <ion-text>{{supplier.company_name}} de {{supplier.city}}</ion-text>
       </ion-item>
     </ion-card-content>
   </ion-card>
