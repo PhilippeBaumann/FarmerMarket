@@ -64,8 +64,9 @@ export class LoginPage implements OnInit {
     // Check if the token is available in the storage
     this.storage.get('token').then((val) => {
       if (val != undefined) {
-        // Update token for next API requests (optional)
-        this.apiService.checkToken()
+
+        // Put the token in the local storage so the API service can check if it is valid
+        this.data.setToken(val)
 
         // API Request to test if the connection is still valid
         this.apiService.checkToken().subscribe(data =>{},
