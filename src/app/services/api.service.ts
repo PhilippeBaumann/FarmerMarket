@@ -1,8 +1,7 @@
 import { Vegetable } from './../../models/vegetables';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { User } from 'src/models/users';
-import { Storage } from '@ionic/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +18,7 @@ export class ApiService {
 
   public token
   
-  constructor(private http: HttpClient, private storage: Storage) {}
+  constructor(private http : HttpClient) {}
 
 
   /* Setters
@@ -38,7 +37,6 @@ export class ApiService {
       headers: new HttpHeaders(this.header),
     }
   }
-  */
 
   public testToken(token){
 
@@ -53,7 +51,7 @@ export class ApiService {
     }
   }
 
-  // Get Custom Header
+  /* Get Custom Header
 
   getHeader(){
     
@@ -70,7 +68,7 @@ export class ApiService {
     return requestOptionsTemp
   }  
 
-  // Retrive token from the local storage
+  /* Retrive token from the local storage
   getToken() {
     this.storage.ready().then(() => {      
         this.storage.get('token').then((token) => {
@@ -78,7 +76,7 @@ export class ApiService {
         })
     })
     return this.token
-  }
+  }*/
 
 
   // Get Requests
@@ -88,20 +86,19 @@ export class ApiService {
   }
 
   getProducts(){
-    return this.http.get<Vegetable[]>(this.url + "products", this.getHeader())
+    return this.http.get<Vegetable[]>(this.url + "products")
   }
 
   getProduct(id){
-    return this.http.get(this.url + "products/" + id, this.getHeader())
+    return this.http.get(this.url + "products/" + id)
   }
 
   getUser(){
-    return this.http.get<User[]>(this.url + "me", this.getHeader())
+    return this.http.get<User[]>(this.url + "me")
   }
 
-  checkToken(token){
-    this.testToken(token)
-    return this.http.get(this.url + "me", this.requestOptions)
+  checkToken(){
+    return this.http.get(this.url + "me")
   }
 
   // Post Requests

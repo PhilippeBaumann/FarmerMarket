@@ -65,10 +65,10 @@ export class LoginPage implements OnInit {
     this.storage.get('token').then((val) => {
       if (val != undefined) {
         // Update token for next API requests (optional)
-        this.apiService.testToken(val)
+        this.apiService.checkToken()
 
         // API Request to test if the connection is still valid
-        this.apiService.checkToken(val).subscribe(data =>{},
+        this.apiService.checkToken().subscribe(data =>{},
           error =>
           {
             // Prompt User that the token or the API is invalid
@@ -115,10 +115,10 @@ export class LoginPage implements OnInit {
   login(){
 
     // Put the token in the local storage so the API service can check if it is valid
-    //this.data.setToken(this.tokenForm.value['token'])
+    this.data.setToken(this.tokenForm.value['token'])
 
     // API Request to test Token validity
-    this.apiService.checkToken(this.tokenForm.value['token']).subscribe(data =>
+    this.apiService.checkToken().subscribe(data =>
       {
         console.log(data)
       }, error =>

@@ -16,7 +16,7 @@ export class DataCoreProvider {
 
     public lastRefresh;
 
-    public token;
+    public token: String;
 
     constructor(private storage: Storage, public api: ApiService){ }
 
@@ -86,16 +86,14 @@ export class DataCoreProvider {
 
     // Insert the token into the local storage
     public async setToken(token) {
+        this.token = token
         this.storage.set('token', token)
     }
 
     // Retrive token from the local storage
-    public getToken() {
-        this.storage.ready().then(() => {      
-            this.storage.get('token').then((val) => {
-                this.token =  val
-            })
-        })
+    public async getToken() {
+        await this.storage.ready()
+        this.token = await this.storage.get('token')
         return this.token
     }
 
