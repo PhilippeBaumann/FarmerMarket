@@ -62,18 +62,19 @@ export class LoginPage implements OnInit {
   ngOnInit() {    
 
     // Check if the token is available in the storage
-    this.storage.get('token').then((val) => {
-      if (val != undefined) {
-
-        // Put the token in the local storage so the API service can check if it is valid
-        this.data.setToken(val)
+    this.storage.get('token').then((token) => {
+      if (token != undefined) {
 
         // API Request to test if the connection is still valid
         this.apiService.checkToken().subscribe(data =>{},
           error =>
           {
             // Prompt User that the token or the API is invalid
-            this.presentToast('Could not establish connection to the API', 'middle')
+            if (error['error'] ==  '[object ProgressEvent]')
+              this.presentToast('Could not establish connection to the API', 'middle')
+            else
+              this.presentToast('Invalid Token', 'bottom')
+            this.menuCtrl.enable(false)
           }, () =>
           {
             // Populate storage with user data from the API
@@ -84,6 +85,7 @@ export class LoginPage implements OnInit {
       }
       else {
         this.menuCtrl.enable(false)
+        this.presentToast('Please login', 'bottom')
       }
     })
   }
@@ -113,31 +115,32 @@ export class LoginPage implements OnInit {
       })
   }  
 
-  login(){
+  async login(){
 
     // Put the token in the local storage so the API service can check if it is valid
-    this.data.setToken(this.tokenForm.value['token'])
-
+    await this.data.setToken(this.tokenForm.value['token'])
+    
     // API Request to test Token validity
-    this.apiService.checkToken().subscribe(data =>
+    this.apiService.checkToken().subscribe(
+      data =>
       {
         console.log(data)
-      }, error =>
+      },
+      err =>
       {
         // Prompt User that the token or the API is invalid
-        if (error['error'] ==  '[object ProgressEvent]') {
+        if (err['error'] ==  '[object ProgressEvent]') {
           this.presentToast('Could not establish connection to the API', 'middle')
         } else {
           this.presentToast('Invalid Token', 'bottom' /* + error['error']['message']*/)
-          console.log(error)
+          console.log(err)
         }
-        // Delete the invalid token
+        // Delete invalid token
         this.data.deleteToken()
-      }, () => {
+      },
+      () => {
         // Prompt User that the inscription has been accepted
         this.presentToast('Login Successful', 'bottom')
-        // Put the token in the local storage
-        this.data.setToken(this.tokenForm.value['token'])
         // Reenable the side-menu
         this.menuCtrl.enable(true)
         // Populate storage with data from the API

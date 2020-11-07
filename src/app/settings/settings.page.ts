@@ -16,7 +16,20 @@ export class SettingsPage implements OnInit {
 
 
   // Try to access already initialized data or refresh it
-  public data: DataCoreProvider;
+  public data: DataCoreProvider  
+  
+  constructor(
+    private router: Router,
+    storage: Storage,
+    private apiService: ApiService,
+    private toastController: ToastController,
+  ){
+      this.data = new DataCoreProvider(storage, apiService)
+      this.data.init()
+  }
+    
+  ngOnInit() {
+  }
   
   // Advanced Toast
   async presentToastWithOptions() {
@@ -42,19 +55,6 @@ export class SettingsPage implements OnInit {
       ]
     });
     toast.present();
-  }
-  
-  constructor(
-    private router: Router,
-    storage: Storage,
-    private apiService: ApiService,
-    private toastController: ToastController,
-  ) {
-    this.data = new DataCoreProvider(storage, apiService)
-    this.data.init()
-  }
-
-  ngOnInit() {
   }
 
   logout(){

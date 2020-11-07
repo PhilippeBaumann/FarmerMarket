@@ -31,4 +31,8 @@ export class DetailPage implements OnInit {
     
   }
 
+  addToBag(id){
+    console.log(id)
+  }
+
 }

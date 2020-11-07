@@ -94,7 +94,11 @@ export class ApiService {
   }
 
   getUser(){
-    return this.http.get<User[]>(this.url + "me")
+    return this.http.get(this.url + "me")
+  }
+
+  getBalance(){
+    return this.http.get(this.url + "me/balance")
   }
 
   checkToken(){

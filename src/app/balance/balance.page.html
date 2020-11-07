@@ -15,8 +15,12 @@
   </ion-header>
 
   <ion-item>
-      <ion-label>Crédit Disponible:</ion-label>
-      <ion-label class="balance">700.-</ion-label>
+      <ion-label>Crédit:</ion-label>
+      <ion-label class="balance">{{balance.credit}}</ion-label>
+  </ion-item>
+  <ion-item>
+      <ion-label>Débit:</ion-label>
+      <ion-label class="balance">{{balance.debit}}</ion-label>
   </ion-item>
 
   <ion-button expand="block" color="success">Ajouter du crédit</ion-button>

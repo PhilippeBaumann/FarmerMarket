@@ -11,12 +11,11 @@ import { User } from 'src/models/users';
 
 export class DataCoreProvider {
 
-    public vegetables = [];
-    public user = [];
+    public vegetables = []
+    public user = []
+    public balance = []
 
     public lastRefresh;
-
-    public token: String;
 
     constructor(private storage: Storage, public api: ApiService){ }
 
@@ -26,7 +25,7 @@ export class DataCoreProvider {
         this.loadStorage();
 
         // Loads everything from the API not just specific fields or data
-        //this.getFromAPI()
+        //this.getAPIdata()
     }
   
     public store() {
@@ -46,6 +45,7 @@ export class DataCoreProvider {
                 } else {                
                     this.storage.get('products').then((data) =>{ this.vegetables = data })
                     this.storage.get('user').then((data) =>{ this.user = data })
+                    this.storage.get('balance').then((data) =>{ this.balance = data })
                     console.log('Data successfully loaded from localstorage')
                 }   
                 this.lastRefresh = new Date().toLocaleDateString() /* + ' ' + new Date().toLocaleTimeString() */
@@ -58,6 +58,7 @@ export class DataCoreProvider {
     private getAPIdata() {        
         this.getAndSaveProductsDataFromAPI()
         this.getAndSaveUserDataFromAPI()
+        this.getAndSaveBalanceDataFromAPI()
     }
 
     public getAndSaveUserDataFromAPI(){
@@ -74,6 +75,17 @@ export class DataCoreProvider {
         });
     }
 
+    public getAndSaveBalanceDataFromAPI() {
+        this.api.getBalance().subscribe(
+        res => {
+            this.balance = res['data']
+            this.storage.set('balance', res)
+        }, err => {
+            // Could be a toast message
+            console.log("Balance error")
+        })
+    }
+
     // Insert the vegetables Into the local storage
     public async setVegetables(vegetables: Vegetable[]) {
         this.storage.set('products', vegetables)
@@ -85,16 +97,14 @@ export class DataCoreProvider {
     }
 
     // Insert the token into the local storage
-    public async setToken(token) {
-        this.token = token
+    public setToken(token) {
         this.storage.set('token', token)
     }
 
     // Retrive token from the local storage
     public async getToken() {
         await this.storage.ready()
-        this.token = await this.storage.get('token')
-        return this.token
+        return await this.storage.get('token')
     }
 
     // Delete the token from the the storage

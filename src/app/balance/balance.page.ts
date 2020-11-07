@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-balance',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BalancePage implements OnInit {
 
-  constructor() { }
+  private balance = {}
+
+  constructor(
+    private apiService: ApiService,
+  ){}
 
   ngOnInit() {
+    this.apiService.getBalance().subscribe( 
+      res =>{
+        this.balance = res
+      })
   }
 
 }

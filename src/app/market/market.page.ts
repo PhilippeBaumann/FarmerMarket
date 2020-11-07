@@ -25,12 +25,10 @@ export class MarketPage implements OnInit {
   ) {
     this.data = new DataCoreProvider(storage, apiService);
     this.url = this.apiService.getURL().replace('/api','');
-    this.data.init();
+    this.data.getAndSaveProductsDataFromAPI()
   }
 
-  ngOnInit() {
-    
-  }
+  ngOnInit() {}
   
   openDetails(id){
     this.apiService.getProduct(id).subscribe(results => {
