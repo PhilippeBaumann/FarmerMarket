@@ -10,7 +10,8 @@ export class ApiService {
 
   // Prefixed API URL
   private url = 'http://localhost:8000/api/';
-  //public url = 'http://vedjiz.mycpnv.ch/api/';
+  //private url = 'http://vedjiz.mycpnv.ch/api/';
+  // Token nBHdWXo7apjzSdYovxIHN8EOio5DFA
 
   header = {}
     
@@ -93,6 +94,10 @@ export class ApiService {
     return this.http.get(this.url + "products/" + id)
   }
 
+  getProductImage(filename){
+    return this.http.get(this.url + "product/picture/" + filename)
+  }
+
   getUser(){
     return this.http.get(this.url + "me")
   }
@@ -120,4 +125,12 @@ export class ApiService {
     }
     return this.http.post(this.url + "user/apply", postData)
   }
+
+  purchaseBasket(basket){
+    let postData = {
+      "purchases": basket
+    }
+    return this.http.post(this.url + "baskets", postData)
+  }
+
 }

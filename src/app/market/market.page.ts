@@ -23,8 +23,8 @@ export class MarketPage implements OnInit {
     storage: Storage,
     private apiService: ApiService,
   ) {
-    this.data = new DataCoreProvider(storage, apiService);
-    this.url = this.apiService.getURL().replace('/api','');
+    this.data = new DataCoreProvider(storage, apiService)
+    this.url = this.apiService.getURL().replace('/api','')
     this.data.getAndSaveProductsDataFromAPI()
   }
 
@@ -46,7 +46,7 @@ export class MarketPage implements OnInit {
       console.log('error')
     })    
   }
-
+  
   addToBag(id){
     console.log(id)
   }

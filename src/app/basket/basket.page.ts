@@ -3,8 +3,6 @@ import { ToastController } from '@ionic/angular';
 import { DataCoreProvider } from 'src/providers/dataprovider';
 import { Storage } from '@ionic/storage';
 import { ApiService } from '../services/api.service';
-import { FORMERR } from 'dns';
-import { groupBy } from 'rxjs/operators';
 
 @Component({
   selector: 'app-basket',
@@ -17,7 +15,17 @@ export class BasketPage implements OnInit {
 
   localBasket = []
 
+  // Simply set the id as parameter to retrive the restof the information needed for displaying
+  simpleBasket = []
+
+  exampleBasket = [{"product_id": "1","quantity": "99"},{"product_id": "3","quantity": "1"}]
+
   result = []
+
+  // Control Declarations
+  public quantity = []
+
+  private totalAmount = 0
 
   constructor(
     storage: Storage,
@@ -48,14 +56,23 @@ export class BasketPage implements OnInit {
       )
 
       console.log(this.result)
+
+      this.updateBasketValue()
   }
 
   removeItem(id){
     console.log(id);
   }
 
+  updateProductQuantity(productID){
+    console.log(this.simpleBasket)
+    console.log(productID)
+    console.log(this.quantity[productID])
+    this.updateBasketValue()
+  }
+
   updateBasketValue(){
-    this.data.basket.filter(product => product.price).reduce((sum, current) => sum + current.total, 0)
+    this.totalAmount = this.localBasket.reduce((sum, current) => sum + current.price, 0).toFixed(2)
   }
 
   emptyBasket(){
@@ -63,7 +80,19 @@ export class BasketPage implements OnInit {
   }
 
   validateBasket(){
-    
+    console.log("Purchase Basket")
+    this.apiService.purchaseBasket(this.exampleBasket).subscribe(data =>
+      {
+        console.log(data)
+      }, error =>
+      {
+        // Prompt User that the inscription has failed and show him what went wrong (uf?)
+        console.log(error)
+               
+      }, () => {
+        // Prompt User that the inscription has been accepted
+        console.log('Purchase Successful', 'bottom')
+      })
   }
 
 }
