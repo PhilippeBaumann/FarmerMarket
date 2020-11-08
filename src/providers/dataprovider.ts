@@ -128,15 +128,24 @@ export class DataCoreProvider {
             // Works Too -> this.basket.push(results['data'][id-1])
             // Get the current Basket and push the new product in it
             this.storage.get('basket').then(
-            product => {
-                if (product != null)                    
-                    this.basket = product
+            storedBasket => {
+                if (storedBasket != null)                    
+                    this.basket = storedBasket
                 // Add the new product to the var basket (-1 = id to array index conversion)
                 this.basket.push(this.vegetables[id-1])
                 // Store the basket in the localstorage with the new product in it
-                this.storage.set('basket',this.basket)
+                this.storage.set('basket', this.basket)
             })
-        })       
+        })
+    }
+
+    public async getBasket(){
+        await this.storage.get('basket').then(
+            storedBasket => {
+                if (storedBasket != null) {this.basket = storedBasket }
+            }
+        )
+        return this.basket
     }
 
     public emptyBasket() {
@@ -145,7 +154,9 @@ export class DataCoreProvider {
         // Delete Basket Entry
         this.storage.remove('basket')
     }
+
     
+    // Search function
 
     public find(id) {
         return new Promise<any>( (resolve, reject) => {

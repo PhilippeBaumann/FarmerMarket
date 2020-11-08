@@ -28,9 +28,11 @@
       <ion-label>Votre Panier</ion-label>
       <ion-button color="danger"(click)="emptyBasket()">Vider</ion-button>
     </ion-list-header>
-    <ion-item *ngIf="data.basket == unset " style="color:lightgray">Panier Vide</ion-item>
-    <ion-item *ngFor="let product of data.basket">
-      <ion-label>{{product.name}} <br>{{product.price}}CHF/{{product.unit}}</ion-label>
+    <ion-item *ngIf="localBasket == unset " style="color:lightgray">Panier Vide</ion-item>
+    <ion-item *ngFor="let value of result">
+      <ion-label>{{value.values[0].name}} - {{value.values[0].price}}CHF/{{value.values[0].unit}} </ion-label>
+      <ion-input type="number" value="{{value.values.length}}"></ion-input>
+      <ion-button color="danger"(click)="removeItem(value.product_id)">X</ion-button>
     </ion-item>
   </ion-list>
   <ion-button expand="block" fill="solid" style="margin-bottom: 8px" (click)="validateBasket()" >Valider Panier {{data.basket.total}}</ion-button>
