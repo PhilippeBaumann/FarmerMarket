@@ -14,7 +14,7 @@ export class MarketPage implements OnInit {
 
   public data: DataCoreProvider;
 
-  product = {}
+  product = []
 
   private url
 

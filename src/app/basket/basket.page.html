@@ -7,6 +7,32 @@
   </ion-toolbar>
 </ion-header>
 
+<!-- Panier Dispo 
 <ion-content>
-
+  <ion-list *ngFor="let basket of baskets">
+    <ion-list-header lines="inset">
+      <ion-label>Panier du {{basket.created_at | date }}</ion-label>
+      <ion-button>Vider</ion-button>
+    </ion-list-header>
+    <ion-item *ngIf="basket.purchases >= 0" style="color:lightgray">Vide</ion-item>
+    <ion-item *ngFor="let purchase of basket.purchases">
+      <ion-label>{{purchase.product.name}}</ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
+-->
+
+<ion-content>
+  <ion-list>
+    <ion-list-header lines="inset">
+      <ion-label>Votre Panier</ion-label>
+      <ion-button color="danger"(click)="emptyBasket()">Vider</ion-button>
+    </ion-list-header>
+    <ion-item *ngIf="data.basket == unset " style="color:lightgray">Panier Vide</ion-item>
+    <ion-item *ngFor="let product of data.basket">
+      <ion-label>{{product.name}} <br>{{product.price}}CHF/{{product.unit}}</ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-button expand="block" fill="solid" style="margin-bottom: 8px" (click)="validateBasket()" >Valider Panier {{data.basket.total}}</ion-button>
+</ion-content>
+

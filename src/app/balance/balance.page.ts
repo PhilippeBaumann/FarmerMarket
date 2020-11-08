@@ -15,7 +15,7 @@ export class BalancePage implements OnInit {
   ){}
 
   ngOnInit() {
-    this.apiService.getBalance().subscribe( 
+    this.apiService.getBalance().subscribe(
       res =>{
         this.balance = res
       })

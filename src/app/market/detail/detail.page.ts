@@ -13,9 +13,9 @@ export class DetailPage implements OnInit {
 
   public product
   public url
-  //public data: DataCoreProvider
+  private data: DataCoreProvider
 
-  constructor(private route: ActivatedRoute, private router: Router, private apiService: ApiService) {
+  constructor(private route: ActivatedRoute, private router: Router, private apiService: ApiService, private storage: Storage) {
     this.url = this.apiService.getURL().replace('/api','');
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
@@ -23,16 +23,14 @@ export class DetailPage implements OnInit {
         console.log(this.router.getCurrentNavigation().extras.state)
       }
     })
-    //this.data = new DataCoreProvider(storage, apiService);
+    this.data = new DataCoreProvider(storage, apiService);
     //this.data.init();
   }
   
-  ngOnInit() {
-    
-  }
+  ngOnInit() {}
 
   addToBag(id){
-    console.log(id)
+    this.data.addToBasket(id)
   }
 
 }

@@ -6,7 +6,7 @@ import { User } from 'src/models/users';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+export class ApiService {  
 
   // Prefixed API URL
   private url = 'http://localhost:8000/api/';
@@ -100,10 +100,15 @@ export class ApiService {
   getBalance(){
     return this.http.get(this.url + "me/balance")
   }
+  
+  getBasket() {
+    return this.http.get(this.url + "baskets")
+  }
 
   checkToken(){
     return this.http.get(this.url + "me")
   }
+
 
   // Post Requests
 

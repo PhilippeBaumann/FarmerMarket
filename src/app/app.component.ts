@@ -22,12 +22,17 @@ export class AppComponent implements OnInit {
     {
       title: 'Market',
       url: '/market',
-      icon: 'basket'
+      icon: 'nutrition'
     },
     {
-      title: 'My Balance',
+      title: 'Balance',
       url: '/balance',
       icon: 'wallet'    
+    },
+    {
+      title: 'Basket',
+      url: '/basket',
+      icon: 'basket'    
     },
     {
       title: 'Settings',

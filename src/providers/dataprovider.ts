@@ -9,11 +9,13 @@ import { User } from 'src/models/users';
 @Injectable()
 
 
-export class DataCoreProvider {
+export class DataCoreProvider {    
 
     public vegetables = []
     public user = []
     public balance = []
+
+    public basket = []
 
     public lastRefresh;
 
@@ -46,6 +48,7 @@ export class DataCoreProvider {
                     this.storage.get('products').then((data) =>{ this.vegetables = data })
                     this.storage.get('user').then((data) =>{ this.user = data })
                     this.storage.get('balance').then((data) =>{ this.balance = data })
+                    this.storage.get('basket').then((data) =>{ this.basket = data })
                     console.log('Data successfully loaded from localstorage')
                 }   
                 this.lastRefresh = new Date().toLocaleDateString() /* + ' ' + new Date().toLocaleTimeString() */
@@ -71,7 +74,7 @@ export class DataCoreProvider {
     public getAndSaveProductsDataFromAPI(){
         this.api.getProducts().subscribe(results => {
             this.vegetables = results['data']
-            this.setVegetables(this.vegetables)
+            this.setProducts(this.vegetables)
         });
     }
 
@@ -87,7 +90,7 @@ export class DataCoreProvider {
     }
 
     // Insert the vegetables Into the local storage
-    public async setVegetables(vegetables: Vegetable[]) {
+    public async setProducts(vegetables: Vegetable[]) {
         this.storage.set('products', vegetables)
     }
 
@@ -114,6 +117,33 @@ export class DataCoreProvider {
 
     public deleteStorage(){
         this.storage.clear()
+    }
+
+    // Basket Management
+
+    public addToBasket(id) {
+        // Load all products from the API
+        this.api.getProducts().subscribe(results => {
+            this.vegetables = results['data']            
+            // Works Too -> this.basket.push(results['data'][id-1])
+            // Get the current Basket and push the new product in it
+            this.storage.get('basket').then(
+            product => {
+                if (product != null)                    
+                    this.basket = product
+                // Add the new product to the var basket (-1 = id to array index conversion)
+                this.basket.push(this.vegetables[id-1])
+                // Store the basket in the localstorage with the new product in it
+                this.storage.set('basket',this.basket)
+            })
+        })       
+    }
+
+    public emptyBasket() {
+        // Empty Basket Var
+        this.basket = []
+        // Delete Basket Entry
+        this.storage.remove('basket')
     }
     
 
