@@ -70,7 +70,9 @@ export class AppComponent implements OnInit {
     },
   ]
 
-  private user = []
+  private user = {
+    user_type: '0'
+  }
 
   constructor(
     private platform: Platform,
@@ -97,8 +99,8 @@ export class AppComponent implements OnInit {
     await this.apiService.getUser().subscribe(
       res =>{
         this.user = res['data']
-        if (this.user.user_type == 1) {          
-          this.appPages = this.appPagesAdmin     
+        if (this.user.user_type == '1') {
+          this.appPages = this.appPagesAdmin
         }
       }
     )    
