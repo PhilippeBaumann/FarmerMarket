@@ -19,13 +19,13 @@
       <ion-button expand="block" fill="solid" style="margin-bottom: 8px" (click)="validateStock()" >Enregistrer</ion-button>
       </ion-col>
     </ion-row>
-    <ion-item *ngFor="let product of localstock">
+    <ion-item *ngFor="let product of newStock">
       <ion-label>{{product.name}} {{product.stock}} / {{product.unit}}</ion-label>
     </ion-item>
   </ion-grid>
 
 <!-- Product Showcase -->
-  <ion-card-content>
+  <ion-card-content *ngIf="!validated">
     <ion-img src="{{url}}storage/pictures/{{displayedProduct.picture}}" style="height: 200px"></ion-img>    
     <ion-row style="margin-top: 20px">
       <ion-col size="4">
@@ -47,7 +47,7 @@
            / {{displayedProduct.unit}}
         </ion-label>
       </ion-col>
-      <ion-col size="6">        
+      <ion-col size="6"> 
       </ion-col>      
     </ion-row>
     <ion-button expand="block" fill="solid" (click)="validateProduct()">OK</ion-button>
