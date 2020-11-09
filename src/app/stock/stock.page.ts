@@ -59,7 +59,7 @@ export class StockPage implements OnInit {
   // Stock Validation
   validateStock(){
     console.log("Validate Stock")
-    this.apiService.validateStock(this.exampleStock).subscribe(data =>
+    this.apiService.validateStock(this.newStock).subscribe(data =>
       {
         console.log(data)
       }, error =>
