@@ -39,6 +39,11 @@ export class AppComponent implements OnInit {
       url: '/settings',
       icon: 'cog'
     },
+    {
+      title: 'Stock',
+      url: '/stock',
+      icon: 'grid'
+    },
   ];  
 
   constructor(
