@@ -133,4 +133,11 @@ export class ApiService {
     return this.http.post(this.url + "baskets", postData)
   }
 
+  validateStock(stock){
+    let postData = {
+      "quantities": stock
+    }
+    return this.http.post(this.url + "products/stock", postData)
+  }
+
 }
