@@ -85,11 +85,11 @@ export class StockPage implements OnInit {
   validateProduct(){
     console.log(this.localstock)
     this.newStock.push(this.localstock[this.index])
-    delete this.localstock[this.index]
+    this.localstock.splice(this.index, 1)
     console.log(this.newStock)
     console.log(this.exampleStock)
     console.log(this.localstock.length)
-    if (this.localstock.length <=  1) {
+    if (this.localstock.length <=  0) {
       this.validated = true
     }else {
       this.next()
