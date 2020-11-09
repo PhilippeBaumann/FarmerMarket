@@ -1,17 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { ApiService } from '../services/api.service';
+import { DataCoreProvider } from './../../providers/dataprovider';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-stock',
   templateUrl: './stock.page.html',
   styleUrls: ['./stock.page.scss'],
 })
-export class StockPage implements OnInit {
+export class StockPage implements OnInit {  
 
-  constructor(private apiService: ApiService, public toastController: ToastController) { }
+  constructor(private apiService: ApiService, public toastController: ToastController, storage: Storage,) {
+    this.data = new DataCoreProvider(storage, apiService)
+    this.url = this.apiService.getURL().replace('/api','')
+  }
 
   ngOnInit() {
+    this.apiService.getProducts().subscribe(results => {
+      this.localstock = results['data']
+    });
   }
 
   // Toast
@@ -24,11 +32,17 @@ export class StockPage implements OnInit {
     toast.present();
   }
 
-  // Local Stock
+  // Local Stock Variables
 
   localstock = []
 
   exampleStock = [{ "id": 1, "quantity": 6.6}, { "id": 2, "quantity": 12}]
+
+  validated: boolean;
+
+  url: string;
+
+  public data: DataCoreProvider;
 
   // Load Stock
 
@@ -48,6 +62,13 @@ export class StockPage implements OnInit {
         // Prompt User that the stock validation has been successful
         this.presentToast('Stock Validation Successful', 'bottom')
       })
+  }
+
+  // Reset Validation
+
+  restartValidation(){
+    console.log('restart')
+    this.validated = false
   }
 
 }

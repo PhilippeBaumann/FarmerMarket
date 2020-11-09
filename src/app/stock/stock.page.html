@@ -3,10 +3,32 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Stock</ion-title>
+    <ion-title>Validation Stock</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+<ion-grid>
+  <!-- Show Only if all are validated validation=true -->
+  <ion-row style="margin-top: 20px">
+    <ion-col size="6">
+      <ion-button expand="block" fill="solid" style="margin-bottom: 8px" (click)="restartValidation()">Recommencer</ion-button>      
+    </ion-col>
+    <ion-col size="6">
+    <ion-button expand="block" fill="solid" style="margin-bottom: 8px" (click)="validateStock()" >Enregistrer</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-item *ngFor="let product of localstock">
+    <ion-label>{{product.name}} {{product.stock}} / {{product.unit}}</ion-label>
+  </ion-item>
+</ion-grid>
 
+<!-- Sliding item with expandable options on both sides -->
+<ion-item-sliding>
+    <ion-item>
+      <ion-item-option side="start" color="tertiary"><-</ion-item-option>
+      <!--<ion-label>{{product.quantities}} {{product.unit}}</ion-label> -->
+      <ion-item-option side="end" color="tertiary">-></ion-item-option>
+    </ion-item>
+  </ion-item-sliding>
 </ion-content>
