@@ -3,6 +3,7 @@ import { ToastController } from '@ionic/angular';
 import { ApiService } from '../services/api.service';
 import { DataCoreProvider } from './../../providers/dataprovider';
 import { Storage } from '@ionic/storage';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-stock',
@@ -17,9 +18,12 @@ export class StockPage implements OnInit {
   }
 
   ngOnInit() {
+
+    // Load Stock
     this.apiService.getProducts().subscribe(results => {
       this.localstock = results['data']
-    });
+      this.displayedProduct = this.localstock[this.index]
+    })
   }
 
   // Toast
@@ -36,16 +40,21 @@ export class StockPage implements OnInit {
 
   localstock = []
 
+  newStock = []
+
+  displayedProduct = []
+
+  index = 0
+
   exampleStock = [{ "id": 1, "quantity": 6.6}, { "id": 2, "quantity": 12}]
 
-  validated: boolean;
+  validated: boolean
 
-  url: string;
+  url: string
 
-  public data: DataCoreProvider;
+  public data: DataCoreProvider
 
-  // Load Stock
-
+  public quantity = []
 
   // Stock Validation
   validateStock(){
@@ -60,7 +69,7 @@ export class StockPage implements OnInit {
                
       }, () => {
         // Prompt User that the stock validation has been successful
-        this.presentToast('Stock Validation Successful', 'bottom')
+        this.presentToast('Les quantités ont été enregistrées', 'bottom')
       })
   }
 
@@ -69,6 +78,47 @@ export class StockPage implements OnInit {
   restartValidation(){
     console.log('restart')
     this.validated = false
+  }
+
+  // Validate Product
+
+  validateProduct(){
+    console.log(this.localstock)
+    this.newStock.push(this.localstock[this.index])
+    delete(this.localstock[this.index])
+    console.log(this.newStock)
+    console.log(this.exampleStock)
+    console.log(this.localstock.length)
+    if (this.localstock.length <=  0) {
+      this.validated = true
+    }else {
+      this.next()
+    }
+    
+  }
+
+  // Controls
+
+  next(){
+    if(this.index >= 0 && this.index < this.localstock.length -1){
+      this.index += 1      
+    }else{
+      this.index = 0
+    }
+    this.displayedProduct = this.localstock[this.index]
+  }
+
+  back(){
+    if(this.index >= 1 && this.index < this.localstock.length){
+      this.index -= 1
+    }else {
+      this.index = this.localstock.length - 1
+    }
+    this.displayedProduct = this.localstock[this.index]
+  }
+
+  updateProductQuantity(productID){
+    this.localstock[this.index].stock = this.quantity[productID]
   }
 
 }
