@@ -17,8 +17,32 @@ import { Storage } from '@ionic/storage';
 })
 export class AppComponent implements OnInit {
   public data: DataCoreProvider;
-  public selectedIndex = 0;
+  public selectedIndex = 0;  
+
   public appPages = [
+    {
+      title: 'Market',
+      url: '/market',
+      icon: 'nutrition'
+    },
+    {
+      title: 'Balance',
+      url: '/balance',
+      icon: 'wallet'    
+    },
+    {
+      title: 'Basket',
+      url: '/basket',
+      icon: 'basket'    
+    },
+    {
+      title: 'Settings',
+      url: '/settings',
+      icon: 'cog'
+    },
+  ]
+
+  public appPagesAdmin = [
     {
       title: 'Market',
       url: '/market',
@@ -44,7 +68,9 @@ export class AppComponent implements OnInit {
       url: '/stock',
       icon: 'grid'
     },
-  ];  
+  ]
+
+  private user = []
 
   constructor(
     private platform: Platform,
@@ -67,6 +93,14 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.apiService.getUser().subscribe(
+      res =>{
+        this.user = res['data']
+        if (this.user.user_type == 1) {          
+          this.appPages = this.appPagesAdmin     
+        }
+      }
+    )    
   }
 }
